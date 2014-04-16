@@ -110,6 +110,30 @@ colorscheme molokai
 "let g:solarized_termcolors=256
 "colorscheme solarized
 
+"""""""""""""""""""""""""""""""""
+"打开文件时，总是跳到退出之前的光标处
+""""""""""""""""""""""""""""""""""
+autocmd BufReadPost *            
+			\ if line("'\"") > 0 && line("'\"") <= line("$") |            
+			\ exe "normal! g`\"" |            
+			\ endif
+
+"""""""""""""""""""""""
+"自动去除行末空白
+""""""""""""""""""""""""
+" Remove trailing whitespace when writing a buffer, but not " for diff files.
+" From: Vigil <vim5632@rainslide.net>
+function RemoveTrailingWhitespace()    
+	if &ft != "diff"        
+		let b:curcol = col(".")        
+		let b:curline = line(".")        
+		silent! %s/\s\+$//        
+		silent! %s/\(\s*\n\)\+\%$//        
+		call cursor(b:curline, b:curcol)    
+	endif
+endfunction
+autocmd BufWritePre * call RemoveTrailingWhitespace()
+
 "------------------------------
 " Platform Dependent Settings
 "------------------------------
